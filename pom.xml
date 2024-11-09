@@ -1,0 +1,192 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>club.siwoo</groupId>
+    <artifactId>siwooac</artifactId>
+    <version>1.0.2-R0.1</version>
+    <packaging>jar</packaging>
+
+    <name>SiwooAC</name>
+    <description>SiwooAC is an open-source and free Anti-Cheat solution for SMP Servers. Compatitable with bedrock
+        crossplay (geysermc) as well.
+    </description>
+
+    <properties>
+
+        <!-- Change to your name or the main project author. -->
+        <author>siwoo</author>
+
+        <!-- Change to the full path where your main plugin class is located. -->
+        <main.class>club.siwoo.siwooac.SiwooAC</main.class>
+
+        <!-- Change the Java version this plugin is built on.
+
+             IMPORTANT: For Java 8, version is "1.8", for Java 11+ it is only "11" or "17".
+
+             If you use 1.8 then your plugin will work on newer versions, but if you
+             use 17 then it will NOT load on servers with previous Java versions.
+             -->
+        <java.version>21</java.version>
+
+        <!-- Change to the latest version from https://github.com/kangarko/Foundation/releases
+             or change to "LATEST" if you downloaded Foundation to your disk and compiled it. -->
+        <foundation.version>6.9.7</foundation.version>
+
+        <!-- Leave on "com.github.kangarko" if you use Foundation from GitHub like most people,
+             or change to "org.mineacademy" if you downloaded our library to your disk and compiled it. -->
+        <foundation.path>com.github.kangarko</foundation.path>
+
+        <!-- DO NOT EDIT. -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <repositories>
+        <!-- DO NOT EDIT, used to download Foundation from GitHub using JitPack tool. -->
+        <repository>
+            <id>jitpack</id>
+            <url>https://jitpack.io</url>
+        </repository>
+        <repository>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>minecraft-libraries</id>
+            <url>https://libraries.minecraft.net</url>
+        </repository>
+        <repository>
+            <id>papermc</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
+        <repository>
+            <id>sonatype</id>
+            <url>https://repository.sonatype.org/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>jeff-media-public</id>
+            <url>https://repo.jeff-media.com/public/</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <!-- DO NOT CHANGE VERSION - breaks 1.8.8 -->
+            <version>1.33</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mojang</groupId>
+            <artifactId>datafixerupper</artifactId>
+            <version>4.0.26</version>
+        </dependency>
+
+        <!-- <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.21.1-R0.1-SNAPSHOT</version>
+        </dependency> -->
+
+        <!-- The Paper API -->
+        <dependency>
+            <groupId>io.papermc.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>1.21.1-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-api</artifactId>
+            <version>4.17.0</version>
+        </dependency>
+
+        <!-- The Foundation library. It contains the latest Spigot API and a ton of useful dependencies
+             Please see the maven-shade-plugin below and configure inclusions properly otherwise
+             your file will shade with all the dependencies resulting it crashes and huge file size. -->
+        <dependency>
+            <groupId>com.github.kangarko</groupId>
+            <artifactId>Foundation</artifactId>
+            <version>6.9.7</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jeff_media</groupId>
+            <artifactId>SpigotUpdateChecker</artifactId>
+            <version>3.0.3</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
+    <!-- DO NOT EDIT unless instructed to do so or you know what you're doing. -->
+    <build>
+        <finalName>${project.name}-${project.version}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+
+                <!-- Change version to the latest one from
+                     https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-jar-plugin -->
+                <version>3.4.2</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+
+                <!-- Change version to the latest one from
+                     https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
+                <version>3.13.0</version>
+                <configuration>
+                    <source>11</source>
+                    <target>11</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+
+                <!-- Change version to the latest one from
+                     https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-shade-plugin -->
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                    <artifactSet>
+                        <includes>
+                            <!-- Important: This will ensure only Foundation is shaded to your jar. If you have
+                                 other dependencies that should be compiled, duplicate this line for each. -->
+                            <include>${foundation.path}:Foundation*</include>
+                            <include>C:\Users\strai\.m2\repository\net\kyori</include>
+                        </includes>
+                    </artifactSet>
+                    <relocations>
+                        <!-- This moves Foundation into your own package in "lib" subpackage to prevent interference. -->
+                        <relocation>
+                            <pattern>org.mineacademy.fo</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.lib</shadedPattern>
+                        </relocation>
+                    </relocations>
+                </configuration>
+            </plugin>
+        </plugins>
+
+        <!-- Replaces ${project.name} and other variables in src/main/resources. -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+</project>

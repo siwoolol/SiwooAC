@@ -1,0 +1,42 @@
+#
+# This is the file your server opens to find the main class of your 
+# plugin and its information. We automatically replace variables here 
+# from your pom.xml file. YOU GENERALLY DO NOT NEED TO EDIT THIS.
+#
+# See https://www.spigotmc.org/wiki/plugin-yml/ for more information.
+# 
+name: ${project.name}
+version: ${project.version}
+author: ${author}
+description: SiwooAC is an open-source and free Anti-Cheat solution for SMP Servers. Compatitable with bedrock crossplay (geysermc) as well.
+main: club.siwoo.siwooac.SiwooAC
+load: POSTWORLD
+website: siwoo.club, siwoo.lol
+
+# Use this for maximum backward server version compatibility
+api-version: 1.13
+
+# Load the following libraries
+libraries:
+  # DO NOT EDIT THE FIRST LIBRARY, required to make your plugin work under Java 15+
+  - org.openjdk.nashorn:nashorn-core:15.4
+  #- org.jsoup:jsoup:1.14.3
+  #- com.zaxxer:HikariCP:5.0.1  
+
+# Same as libraries, but only works on Minecraft <1.16 using our own special method.
+#legacy-libraries:
+
+# Plugins that we support so that we are loaded after them for your convenience.
+softdepend: [ AuthMe, BanManager, BungeeChatAPI, CMI, DiscordSRV, Factions, Feudal, ItemsAdder, Essentials, LegacyFactions, Lands, LuckPerms, Multiverse-Core, MVdWPlaceholderAPI, MythicMobs, mcMMO, Nicky, PlaceholderAPI, ProtocolLib, SimpleClans, Towny, TownyChat, Vault, WorldEdit ]
+
+#
+# The commands are built at runtime so you can change them easily within the settings.
+# Do not change anything in here, you will break the plugin and get no support.
+#
+commands:
+  siwooac:
+    usage: /siwooac help
+    description: "SiwooAC"
+  aclogs:
+    usage: /aclogs
+    description: "View AC Logs (Admin Only)"
