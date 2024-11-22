@@ -18,6 +18,7 @@ public class PlayerData {
     private final Map<UUID, Queue<Integer>> rightClickIntervals = new HashMap<>();
     private final Map<UUID, Integer> criticalHits = new HashMap<>();
     private final Map<UUID, Integer> normalHits = new HashMap<>();
+    private final Map<UUID, Integer> scaffoldVL = new HashMap<>();
 
     public void incrementFlightTicks(Player p) {
         flightTicks.put(p.getUniqueId(), getFlightTicks(p) + 1);
@@ -135,4 +136,18 @@ public class PlayerData {
     public int getNormalHits(Player p) {
         return normalHits.getOrDefault(p.getUniqueId(), 0);
     }
+
+    public void incrementScaffoldVL(Player player) {
+        scaffoldVL.put(player.getUniqueId(), getScaffoldVL(player) + 1);
+    }
+
+    public void resetScaffoldVL(Player player) {
+        scaffoldVL.put(player.getUniqueId(), 0);
+    }
+
+    public int getScaffoldVL(Player player) {
+        return scaffoldVL.getOrDefault(player.getUniqueId(), 0);
+    }
+
+    
 }
