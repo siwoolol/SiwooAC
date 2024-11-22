@@ -8,48 +8,46 @@ import java.util.*;
 
 public class AimAssistUtil {
 
-    private static final int MAX_ACCURACY_SAMPLES = 20;
-    private static final Map<UUID, Queue<Double>> accuracyHistory = new HashMap<>();
-    private static final Map<UUID, Vector> lastLookDirection = new HashMap<>();
+    private static final int MAX_SAMPLES = 20; // Number of angle changes to store
+    private static final Map<UUID, Deque<Double>> angleChangeHistory = new HashMap<>();
     private static final Map<UUID, Long> lastAttackTime = new HashMap<>();
 
     public static boolean isSuspiciouslyAccurate(Player attacker, Player victim) {
         UUID attackerUUID = attacker.getUniqueId();
         Location attackerEyes = attacker.getEyeLocation();
-        Location victimHead = victim.getEyeLocation().add(0, -0.5, 0);
+        Location victimHead = victim.getEyeLocation().add(0, -0.5, 0); // Approximate head location
         Vector victimDirection = victimHead.toVector().subtract(attackerEyes.toVector());
 
-        // Calculate accuracy
-        double accuracy = attackerEyes.getDirection().dot(victimDirection.normalize());
+        // Calculate the angle between the attacker's look direction and the victim
+        double angle = attackerEyes.getDirection().angle(victimDirection);
 
-        // Maintain accuracy history
-        Queue<Double> playerAccuracyHistory = accuracyHistory.computeIfAbsent(attackerUUID, k -> new LinkedList<>());
-        playerAccuracyHistory.offer(accuracy);
-        if (playerAccuracyHistory.size() > MAX_ACCURACY_SAMPLES) {
-            playerAccuracyHistory.poll();
+        // Add the angle change to the history
+        Deque<Double> playerAngleHistory = angleChangeHistory.computeIfAbsent(attackerUUID, k -> new LinkedList<>());
+        if (playerAngleHistory.size() == MAX_SAMPLES) {
+            playerAngleHistory.removeLast();
+        }
+        playerAngleHistory.addFirst(angle);
+
+        // Calculate the average and standard deviation of the angle changes
+        double averageAngle = playerAngleHistory.stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
+        double standardDeviation = Math.sqrt(playerAngleHistory.stream()
+                .mapToDouble(a -> Math.pow(a - averageAngle, 2))
+                .average().orElse(0.0));
+
+        // Check for consistent small angle changes (AimA)
+        if (standardDeviation < 3.5 && playerAngleHistory.stream().allMatch(a -> a < 10)) {
+            return true;
         }
 
-        // Check if the attacker is actively moving their crosshair
+        // Check for sudden large angle changes (AimB)
         long lastAttack = lastAttackTime.getOrDefault(attackerUUID, 0L);
         long currentTime = System.currentTimeMillis();
-        boolean isMovingCrosshair = currentTime - lastAttack < 500; // 500ms threshold for active aiming
-
-        // Refined accuracy check
-        double averageAccuracy = playerAccuracyHistory.stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
-        if (accuracy > 0.9 && averageAccuracy > 0.9 && isMovingCrosshair) { // Check for active aiming
+        if (currentTime - lastAttack < 500 && angle > 60) { // 500ms threshold
             return true;
         }
 
-        // Refined sudden snapping check (more lenient)
-        Vector lastLook = lastLookDirection.getOrDefault(attackerUUID, victimDirection);
-        double lookAngleChange = lastLook.angle(victimDirection);
-        if (lookAngleChange > 155 && accuracy > 0.9 && isMovingCrosshair) {
-            return true;
-        }
-
-        // Update last attack time and look direction
         lastAttackTime.put(attackerUUID, currentTime);
-        lastLookDirection.put(attackerUUID, attackerEyes.getDirection());
+
         return false;
     }
 }

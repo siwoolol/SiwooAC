@@ -30,8 +30,7 @@ public class AimAssistCheck implements Listener {
                 // Check if the player was recently flagged
                 if (playerData.wasRecentlyFlagged(attacker)) {
                     violationManager.flagPlayer(attacker, "Aim Assist");
-                    // Optionally, cancel the attack:
-                    // event.setCancelled(true);
+                    event.setCancelled(true);
                 } else {
                     playerData.setFlagged(attacker, true); // Mark as recently flagged
                 }
