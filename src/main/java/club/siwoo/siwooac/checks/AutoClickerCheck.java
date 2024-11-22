@@ -25,30 +25,28 @@ public class AutoClickerCheck implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        long currentTime = System.currentTimeMillis();
 
         if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
-            // Left Click Handling
-            checkClickPattern(player, currentTime, false);
-        } else if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            // Right Click Handling
-            checkClickPattern(player, currentTime, true);
-        }
-    }
+            long now = System.currentTimeMillis();
+            long lastClick = playerData.getLastLeftClick(player);
 
-    private void checkClickPattern(Player player, long currentTime, boolean isRightClick) {
-        long lastClickTime = playerData.getLastClickTime(player, isRightClick);
-        if (lastClickTime != 0) {
-            int clickInterval = (int) (currentTime - lastClickTime);
-            int expectedInterval = 1000 / (isRightClick ? MAX_RIGHT_CLICK_CPS : MAX_CPS); // Calculate expected interval
+            if (lastClick != 0) {
+                int cps = (int) (1000.0 / (now - lastClick));
 
-            playerData.addClickInterval(player, clickInterval, isRightClick);
-            int violationLevel = playerData.analyzeClickIntervals(player, expectedInterval, MAX_CLICK_VARIATION, isRightClick);
+                playerData.addCPSSample(player, cps);
 
-            if (violationLevel > 10) { // Adjust the threshold as needed
-                violationManager.flagPlayer(player, "Suspicious Clicking Pattern");
+                if (playerData.getCPSSamples(player).size() >= 20) {
+                    double averageCPS = playerData.getAverageCPS(player);
+                    double deviation = playerData.getStandardDeviationCPS(player);
+
+                    if (averageCPS > 15 && deviation < 2.5) { // Adjust thresholds as needed
+                        violationManager.flagPlayer(player, "AutoClicker");
+                        event.setCancelled(true);
+                    }
+                }
             }
+
+            playerData.setLastLeftClick(player, now);
         }
-        playerData.setLastClickTime(player, currentTime, isRightClick);
     }
 }

@@ -19,6 +19,8 @@ public class PlayerData {
     private final Map<UUID, Integer> criticalHits = new HashMap<>();
     private final Map<UUID, Integer> normalHits = new HashMap<>();
     private final Map<UUID, Integer> scaffoldVL = new HashMap<>();
+    private final Map<UUID, Long> lastLeftClick = new HashMap<>();
+    private final Map<UUID, Deque<Integer>> cpsSamples = new HashMap<>();
 
     public void incrementFlightTicks(Player p) {
         flightTicks.put(p.getUniqueId(), getFlightTicks(p) + 1);
@@ -76,44 +78,6 @@ public class PlayerData {
         return recentlyFlagged.getOrDefault(p.getUniqueId(), false);
     }
 
-    public long getLastClickTime(Player p, boolean isRightClick) {
-        return isRightClick ? lastRightClickTime.getOrDefault(p.getUniqueId(), 0L)
-                : lastLeftClickTime.getOrDefault(p.getUniqueId(), 0L);
-    }
-
-    public void setLastClickTime(Player p, long time, boolean isRightClick) {
-        if (isRightClick) {
-            lastRightClickTime.put(p.getUniqueId(), time);
-        } else {
-            lastLeftClickTime.put(p.getUniqueId(), time);
-        }
-    }
-
-    public void addClickInterval(Player p, int interval, boolean isRightClick) {
-        Queue<Integer> intervals = isRightClick ? rightClickIntervals.computeIfAbsent(p.getUniqueId(), k -> new ArrayDeque<>())
-                : leftClickIntervals.computeIfAbsent(p.getUniqueId(), k -> new ArrayDeque<>());
-        intervals.add(interval);
-        if (intervals.size() > 10) {  // Keep a maximum of 10 intervals for analysis
-            intervals.poll();
-        }
-    }
-
-    public int analyzeClickIntervals(Player p, int expectedInterval, int allowedVariation, boolean isRightClick) {
-        Queue<Integer> intervals = isRightClick ? rightClickIntervals.get(p.getUniqueId())
-                : leftClickIntervals.get(p.getUniqueId());
-        if (intervals == null || intervals.size() < 10) {
-            return 0;
-        }
-
-        int violations = 0;
-        for (int interval : intervals) {
-            if (Math.abs(interval - expectedInterval) > allowedVariation) {
-                violations++;
-            }
-        }
-        return violations;
-    }
-
     public double getCriticalHitRate(Player p) {
         int criticals = criticalHits.getOrDefault(p.getUniqueId(), 0);
         int normals = normalHits.getOrDefault(p.getUniqueId(), 0);
@@ -149,5 +113,41 @@ public class PlayerData {
         return scaffoldVL.getOrDefault(player.getUniqueId(), 0);
     }
 
-    
+    public long getLastLeftClick(Player player) {
+        return lastLeftClick.getOrDefault(player.getUniqueId(), 0L);
+    }
+
+    public void setLastLeftClick(Player player, long time) {
+        lastLeftClick.put(player.getUniqueId(), time);
+    }
+
+    public void addCPSSample(Player player, int cps) {
+        Deque<Integer> playerSamples = cpsSamples.computeIfAbsent(player.getUniqueId(), k -> new LinkedList<>());
+        if (playerSamples.size() == 20) {
+            playerSamples.removeLast();
+        }
+        playerSamples.addFirst(cps);
+    }
+
+    public Deque<Integer> getCPSSamples(Player player) {
+        return cpsSamples.get(player.getUniqueId());
+    }
+
+    public double getAverageCPS(Player player) {
+        Deque<Integer> samples = getCPSSamples(player);
+        if (samples == null || samples.isEmpty()) {
+            return 0;
+        }
+        return samples.stream().mapToDouble(Integer::doubleValue).average().orElse(0);
+    }
+
+    public double getStandardDeviationCPS(Player player) {
+        Deque<Integer> samples = getCPSSamples(player);
+        if (samples == null || samples.size() < 2) {
+            return 0;
+        }
+        double mean = getAverageCPS(player);
+        double variance = samples.stream().mapToDouble(i -> Math.pow(i - mean, 2)).average().orElse(0);
+        return Math.sqrt(variance);
+    }
 }
