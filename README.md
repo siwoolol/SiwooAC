@@ -53,7 +53,8 @@ We Recommend Using the Latest Releases for preventing new cheats.
 This Project Partially Contains Codes
 | Repo | Author | Part | Type |
 | ----:| ----:| ------:| -----:|
-| [AntiHaxerman](https://github.com/Tecnio/AntiHaxerman/) | Tecnio | AimAssist Check (A, B, C) | Inspired Work |
+| [AntiHaxerman](https://github.com/Tecnio/AntiHaxerman/) | Tecnio | KillAura Check (A, B) | Inspired Work |
+| [StackOverflow](https://stackoverflow.com/) | Forum Users | ... | Usage of Java Codes |
 | [Adventure API](https://github.com/KyoriPowered/adventure/) | KyoriPowered | ... | Usage of API |
 | [Bukkit API](https://bukkit.org/) | The Bukkit Team | ... | Usage of API |
 
