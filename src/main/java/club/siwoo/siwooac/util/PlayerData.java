@@ -11,16 +11,15 @@ public class PlayerData {
     private final Map<UUID, Double> lastVerticalVelocity = new HashMap<>();
     private final Map<UUID, Boolean> recentCollision = new HashMap<>();
     private final Map<UUID, Integer> ticksSinceJump = new HashMap<>();
-    private final Map<UUID, Long> lastLeftClickTime = new HashMap<>();
-    private final Map<UUID, Long> lastRightClickTime = new HashMap<>();
     private final Map<UUID, Boolean> recentlyFlagged = new HashMap<>();
-    private final Map<UUID, Queue<Integer>> leftClickIntervals = new HashMap<>();
-    private final Map<UUID, Queue<Integer>> rightClickIntervals = new HashMap<>();
     private final Map<UUID, Integer> criticalHits = new HashMap<>();
     private final Map<UUID, Integer> normalHits = new HashMap<>();
     private final Map<UUID, Integer> scaffoldVL = new HashMap<>();
     private final Map<UUID, Long> lastLeftClick = new HashMap<>();
     private final Map<UUID, Deque<Integer>> cpsSamples = new HashMap<>();
+    private final Map<UUID, Long> lastAttackTime = new HashMap<>();
+    private final Map<UUID, org.bukkit.util.Vector> lastAimDirection = new HashMap<>();
+    private final Map<UUID, Deque<Double>> angleChanges = new HashMap<>();
 
     public void incrementFlightTicks(Player p) {
         flightTicks.put(p.getUniqueId(), getFlightTicks(p) + 1);
@@ -148,6 +147,52 @@ public class PlayerData {
         }
         double mean = getAverageCPS(player);
         double variance = samples.stream().mapToDouble(i -> Math.pow(i - mean, 2)).average().orElse(0);
+        return Math.sqrt(variance);
+    }
+
+    public long getLastAttackTime(Player player) {
+        return lastAttackTime.getOrDefault(player.getUniqueId(), 0L);
+    }
+
+    public void setLastAttackTime(Player player, long time) {
+        lastAttackTime.put(player.getUniqueId(), time);
+    }
+
+    public org.bukkit.util.Vector getLastAimDirection(Player player) { // Specify the fully qualified name
+        return lastAimDirection.getOrDefault(player.getUniqueId(), new org.bukkit.util.Vector()); // Fully qualified name for default Vector
+    }
+
+    public void setLastAimDirection(Player player, org.bukkit.util.Vector direction) {
+        lastAimDirection.put(player.getUniqueId(), direction);
+    }
+
+    public void addAngleChange(Player player, double angleChange) {
+        Deque<Double> playerAngleChanges = angleChanges.computeIfAbsent(player.getUniqueId(), k -> new LinkedList<>());
+        if (playerAngleChanges.size() == 20) {
+            playerAngleChanges.removeLast();
+        }
+        playerAngleChanges.addFirst(angleChange);
+    }
+
+    public Deque<Double> getAngleChanges(Player player) {
+        return angleChanges.computeIfAbsent(player.getUniqueId(), k -> new LinkedList<>()); // Ensure the Deque exists
+    }
+
+    public double getAverageAngleChange(Player player) {
+        Deque<Double> changes = getAngleChanges(player);
+        if (changes == null || changes.isEmpty()) {
+            return 0;
+        }
+        return changes.stream().mapToDouble(Double::doubleValue).average().orElse(0);
+    }
+
+    public double getStandardDeviationAngleChange(Player player) {
+        Deque<Double> changes = getAngleChanges(player);
+        if (changes == null || changes.size() < 2) {
+            return 0;
+        }
+        double mean = getAverageAngleChange(player);
+        double variance = changes.stream().mapToDouble(a -> Math.pow(a - mean, 2)).average().orElse(0);
         return Math.sqrt(variance);
     }
 }

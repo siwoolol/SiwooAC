@@ -36,6 +36,7 @@ public class SiwooAC extends JavaPlugin implements CommandExecutor {
         getServer().getPluginManager().registerEvents(new CriticalsCheck(violationManager), this);
         getServer().getPluginManager().registerEvents(new HitboxCheck(violationManager), this);
         getServer().getPluginManager().registerEvents(new ScaffoldCheck(violationManager, playerData), this);
+        getServer().getPluginManager().registerEvents(new KillAuraCheck(violationManager, playerData), this);
     }
 
     @Override
