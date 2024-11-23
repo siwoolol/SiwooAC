@@ -48,3 +48,13 @@ We Recommend Using the Latest Releases for preventing new cheats.
 ✅️ - Successful (<10% of Server Resource Used) </br>
 🚫 - Failed (Plugin Malfunction) </br>
 ⚠️ - Unstable (>=10% of Server Resource Used) </br>
+
+## Credits
+This Project Partially Contains Codes
+| Repo | Author | Part | Type |
+| ----:| ----:| ------:| -----:|
+| [AntiHaxerman](https://github.com/Tecnio/AntiHaxerman/) | Tecnio | AimAssist Check (A, B, C) | Inspired Work |
+| [Adventure API](https://github.com/KyoriPowered/adventure/) | KyoriPowered | ... | Usage of API |
+| [Bukkit API](https://bukkit.org/) | The Bukkit Team | ... | Usage of API |
+
+> Development Helped by [Gemini](https://gemini.google.com) (The Actual Code is Heavily Modified By Me, <10% of the Actual Code is Written by Gemini)
