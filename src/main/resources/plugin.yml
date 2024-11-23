@@ -40,3 +40,6 @@ commands:
   aclogs:
     usage: /aclogs
     description: "View AC Logs (Admin Only)"
+  ban:
+    usage: /ban [player] [reason]
+    description: "Bans a player (Admin Only)"
