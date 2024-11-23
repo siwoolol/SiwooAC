@@ -1,6 +1,7 @@
 package club.siwoo.siwooac;
 
 import club.siwoo.siwooac.checks.*;
+import club.siwoo.siwooac.commands.Ban;
 import club.siwoo.siwooac.util.PlayerData;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -24,6 +25,7 @@ public class SiwooAC extends JavaPlugin implements CommandExecutor {
     @Override
     public void onEnable() {
         EnableChecks();
+        LoadCommands();
     }
 
     private void EnableChecks() {
@@ -37,6 +39,10 @@ public class SiwooAC extends JavaPlugin implements CommandExecutor {
         getServer().getPluginManager().registerEvents(new HitboxCheck(violationManager), this);
         getServer().getPluginManager().registerEvents(new ScaffoldCheck(violationManager, playerData), this);
         getServer().getPluginManager().registerEvents(new KillAuraCheck(violationManager, playerData), this);
+    }
+
+    private void LoadCommands() {
+        getServer().getPluginManager().registerEvents(new Ban(), this);
     }
 
     @Override
