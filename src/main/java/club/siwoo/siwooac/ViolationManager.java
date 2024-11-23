@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 
 public class ViolationManager {
-    public Permission admin = new Permission("siwoo.admin");
+    public Permission admin = new Permission("siwooac.admin");
     private final JavaPlugin plugin; // Reference to your plugin
     private FileConfiguration logsConfig;
     private File logsFile;
