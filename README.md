@@ -1,13 +1,13 @@
 ## SiwooAC 
 SiwooAC is an open-source and free Anti-Cheat solution for SMP Servers. 
-This Anti-Cheat Plugin is Extremely Resource-Friendly: [See Performance Reports](#run-performancestability-report)
+This Anti-Cheat Plugin is Extremely Resource-Friendly: [View Performance Reports](#run-performancestability-report)
 > You can edit/remix this project under the [License](LICENSE).
 
 ## How to Use
 [Download the Latest Release](https://github.com/siwoolol/SiwooAC/releases) and Simply Put it in your plugins Folder/Directory.
 
 ## Support The Project
-You Could Support The Creator By either [Donating Via Paypal](https://paypal.me/ss2uang/)
+You Could Support The Creator By Either [Donating Via Paypal](https://paypal.me/ss2uang/)
 or Starring the Project.
 
 ## Common Asked Questions (FAQ)
@@ -31,6 +31,9 @@ We Recommend Using the Latest Releases for preventing new cheats.
 
 | Build Num/ID | Run Result |
 | --------:| -----------:|
+| Latest Snapshot | ✅️ |
+| Latest Release | ✅️ |
+| | |
 | 1.0.3-R0.1 | ✅️ |
 | 1.0.2-R0.3 | ✅️ |
 | Seperated | Seperated from SiwooClub |
