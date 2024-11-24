@@ -1,16 +1,16 @@
-## SiwooAC 
+# SiwooAC 
 SiwooAC is an open-source and free Anti-Cheat solution for SMP Servers. 
 This Anti-Cheat Plugin is Extremely Resource-Friendly: [View Performance Reports](#run-performancestability-report)
 > You can edit/remix this project under the [License](LICENSE).
 
-## How to Use
+# How to Use
 [Download the Latest Release](https://github.com/siwoolol/SiwooAC/releases) and Simply Put it in your plugins Folder/Directory.
 
-## Support The Project
+# Support The Project
 You Could Support The Creator By Either [Donating Via Paypal](https://paypal.me/ss2uang/)
 or Starring the Project.
 
-## Common Asked Questions (FAQ)
+# Common Asked Questions (FAQ)
 <details>
   <summary>Does This Work With GeyserMC?</summary>
   > Of Course! We have Seperate Checks for Bedrock Players!
@@ -22,7 +22,7 @@ or Starring the Project.
   > We are Currently Planning to Add Supports to more Checks and Improving The Checks.
 </details>
 
-## Run Performance/Stability Report
+# Run Performance/Stability Report
 We Recommend Using the Latest Releases for preventing new cheats.
 
 ** We consider a successful run (<10%) of the Debug Server Resource
@@ -34,6 +34,7 @@ We Recommend Using the Latest Releases for preventing new cheats.
 | Latest Snapshot | ✅️ |
 | Latest Release | ✅️ |
 | | |
+| 1.0.3-R0.2 | ✅️ |
 | 1.0.3-R0.1 | ✅️ |
 | 1.0.2-R0.3 | ✅️ |
 | Seperated | Seperated from SiwooClub |
@@ -49,12 +50,12 @@ We Recommend Using the Latest Releases for preventing new cheats.
 🚫 - Failed (Plugin Malfunction) </br>
 ⚠️ - Unstable (>=10% of Server Resource Used) </br>
 
-## Credits
-This Project Partially Contains Codes
+# Credits
+This Project Partially Contains Codes From
 | Repo | Author | Part | Type |
 | ----:| ----:| ------:| -----:|
 | [AntiHaxerman](https://github.com/Tecnio/AntiHaxerman/) | Tecnio | KillAura Check (A, B) | Inspired Work |
-| [StackOverflow](https://stackoverflow.com/) | Forum Users | ... | Usage of Java Codes |
+| [StackOverflow](https://stackoverflow.com/) | Forum Users | ... | Usage of Maven & Java Codes |
 | [Adventure API](https://github.com/KyoriPowered/adventure/) | KyoriPowered | ... | Usage of API |
 | [Bukkit API](https://bukkit.org/) | The Bukkit Team | ... | Usage of API |
 
