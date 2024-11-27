@@ -41,7 +41,7 @@ or Starring the Project.
 
 We Recommend Using the Latest Releases for preventing new cheats.
 
-######       * We consider a successful run (<10%) of the Debug Server Resource
+######  * We consider a successful run (<10%) of the Debug Server Resource
 
 > Set Environment: LPDDR5X 6GB Ram, 4 CPU Cores Allocated
 > ###### (The Environment is Extremely Optimized For The Plugin)
@@ -49,8 +49,9 @@ We Recommend Using the Latest Releases for preventing new cheats.
 |                       Build Num/ID | Run Overview |             Run Report |
 |-----------------------------------:|-------------:|-----------------------:|
 |        Latest Release </br> (null) |         null |                   null |
-| Latest Snapshot </br> (1.0.3-R0.4) |           ✅️ |  Approximately 7% used |
+| Latest Snapshot </br> (1.0.3-R0.5) |           ✅️ |  Approximately 7% used |
 |                                    |              |                        |
+|                         1.0.3-R0.4 |           🚫 | Build Partially Failed |
 |                         1.0.3-R0.3 |           ✅️ |  Approximately 6% used |
 |                         1.0.3-R0.2 |           ✅️ |  Approximately 6% used |
 |                         1.0.3-R0.1 |           ✅️ |  Approximately 5% used |
