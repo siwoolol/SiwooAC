@@ -29,7 +29,7 @@ public class SiwooAC extends JavaPlugin implements CommandExecutor {
     }
 
     private void EnableChecks() {
-        violationManager = new ViolationManager(this); // You might want to pass 'this' to it if it needs the plugin instance
+        violationManager = new ViolationManager(this);
         playerData = new PlayerData();
         new ReachCheck(violationManager, playerData);
         getServer().getPluginManager().registerEvents(new FlightCheck(violationManager), this);
